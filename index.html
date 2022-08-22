@@ -98,6 +98,9 @@
             this.operation = ''
           },
           addToDisplay() {
+            if (this.display === 0 && event.target.innerText === "0") {
+              return
+            }
             this.firstNumber += event.target.innerText
             console.log(this.firstNumber)
             this.display = this.firstNumber
@@ -156,7 +159,7 @@
             this.firstNumber = '',
             this.secondNumber = '',
             this.computedNumber = '',
-            this.display = '',
+            this.display = 0,
             this.operation = ''
           }
         }
