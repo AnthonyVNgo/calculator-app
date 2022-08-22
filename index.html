@@ -27,7 +27,7 @@
           <tr>
             <th colspan="4">
               <div class="flex justify-end align-end h-100 padding-right-10">
-                <span class="display">{{firstNumber}}</span>
+                <span class="display">{{display}}</span>
               </div>
             </th>
           </tr>
@@ -38,27 +38,27 @@
             <td class="calc-orange"><button>&#247;</button></td>
           </tr>
           <tr>
-            <td class="calc-lightgrey"><button>7</button></td>
-            <td class="calc-lightgrey"><button>8</button></td>
-            <td class="calc-lightgrey"><button>9</button></td>
+            <td class="calc-lightgrey"><button @click="addToDisplay">7</button></td>
+            <td class="calc-lightgrey"><button @click="addToDisplay">8</button></td>
+            <td class="calc-lightgrey"><button @click="addToDisplay">9</button></td>
             <td class="calc-orange"><button>&#215;</button></td>
           </tr>
           <tr>
-            <td class="calc-lightgrey"><button>4</button></td>
-            <td class="calc-lightgrey"><button>5</button></td>
-            <td class="calc-lightgrey"><button>6</button></td>
+            <td class="calc-lightgrey"><button @click="addToDisplay">4</button></td>
+            <td class="calc-lightgrey"><button @click="addToDisplay">5</button></td>
+            <td class="calc-lightgrey"><button @click="addToDisplay">6</button></td>
             <td class="calc-orange"><button>-</button></td>
           </tr>
           <tr>
-            <td class="calc-lightgrey"><button>1</button></td>
-            <td class="calc-lightgrey"><button>2</button></td>
-            <td class="calc-lightgrey"><button @click="display">3</button></td>
-            <td class="calc-orange"><button>+</button></td>
+            <td class="calc-lightgrey"><button @click="addToDisplay">1</button></td>
+            <td class="calc-lightgrey"><button @click="addToDisplay">2</button></td>
+            <td class="calc-lightgrey"><button @click="addToDisplay">3</button></td>
+            <td class="calc-orange"><button @click="sum">+</button></td>
           </tr>
           <tr>
-            <td colspan="2" class="calc-lightgrey bottom-left-btn"><button>0</button></td>
+            <td colspan="2" class="calc-lightgrey bottom-left-btn"><button @click="addToDisplay">0</button></td>
             <td class="calc-lightgrey"><button>.</button></td>
-            <td class="calc-orange bottom-right-btn"><button>=</button></td>
+            <td class="calc-orange bottom-right-btn"><button @click="compute">=</button></td>
           </tr>
         </table> -->
       </div>
@@ -71,19 +71,56 @@
         data() {
           return {
             firstNumber: 0,
-            secondNumber: 0
+            secondNumber: 0,
+            computedNumber: 0,
+            display: 0,
+            operation: ''
           }
         },
         methods: {
-          display() {
-            if (this.firstNumber === 0) {
-              this.firstNumber = event.target.innerText
-            } else {
-              this.firstNumber += event.target.innerText
+          addToDisplay() {
+            if (this.operation === '') {
+              if (this.display === 0 && event.target.innerText === "0") {
+                return
+              }
+              if (this.display === 0) {
+                this.display = event.target.innerText
+              } else {
+                this.display += event.target.innerText
+              }
+              this.assignFirstNumber()
+            }
+
+            if (this.operation !== '') {
+              if (this.secondNumber === 0) {
+                this.display = event.target.innerText
+              } else {
+                this.display += event.target.innerText
+              }
+              this.assignSecondNumber()
             }
           },
+          assignFirstNumber() {
+            this.firstNumber = Number(this.display)
+          },
+          assignSecondNumber() {
+            this.secondNumber = Number(this.display)
+          },
+          compute() {
+            if (this.operation === 'addition') {
+              this.computedNumber = this.firstNumber + this.secondNumber
+              this.display = this.computedNumber
+              this.firstNumber = this.computedNumber
+            }
+          },
+          sum() {
+            this.operation = 'addition'
+          },
           allClear() {
-            this.firstNumber = 0
+            this.firstNumber = 0,
+            this.secondNumber = 0,
+            this.display = 0,
+            this.operation = ''
           }
         }
       }).mount('#app')
