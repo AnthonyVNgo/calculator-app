@@ -48,18 +48,18 @@
             <td class="calc-lightgrey"><button @click="addToDisplay">4</button></td>
             <td class="calc-lightgrey"><button @click="addToDisplay">5</button></td>
             <td class="calc-lightgrey"><button @click="addToDisplay">6</button></td>
-            <td class="calc-orange"><button>-</button></td>
+            <td class="calc-orange"><button @click="minusButtonClicked">-</button></td>
           </tr>
           <tr>
             <td class="calc-lightgrey"><button @click="addToDisplay">1</button></td>
             <td class="calc-lightgrey"><button @click="addToDisplay">2</button></td>
             <td class="calc-lightgrey"><button @click="addToDisplay">3</button></td>
-            <td class="calc-orange"><button @click="sum">+</button></td>
+            <td class="calc-orange"><button @click="plusButtonClicked">+</button></td>
           </tr>
           <tr>
             <td colspan="2" class="calc-lightgrey bottom-left-btn"><button @click="addToDisplay">0</button></td>
             <td class="calc-lightgrey"><button>.</button></td>
-            <td class="calc-orange bottom-right-btn"><button @click="compute">=</button></td>
+            <td class="calc-orange bottom-right-btn"><button @click="equalSignClicked">=</button></td>
           </tr>
         </table> -->
       </div>
@@ -101,9 +101,67 @@
             if (this.display === 0 && event.target.innerText === "0") {
               return
             }
-            this.firstNumber += event.target.innerText
-            console.log(this.firstNumber)
-            this.display = this.firstNumber
+
+            if (this.operation === '') {
+              this.firstNumber += event.target.innerText
+              this.display = this.firstNumber
+              this.assignFirstNumber()
+            }
+
+            if (this.operation !== '') {
+              this.secondNumber += event.target.innerText
+              this.display = this.secondNumber
+              this.assignSecondNumber()
+            }
+          },
+          operationClicked() {
+            this.operation = 'clicked'
+          },
+          equalSignClicked() {
+            if (this.operation === 'addition') {
+              this.computedNumber = this.firstNumber += this.secondNumber
+              this.display = this.computedNumber
+              console.log('125')
+            }
+
+            if (this.operation === 'subtraction') {
+              this.computedNumber = this.firstNumber -= this.secondNumber
+              this.display = this.computedNumber
+              console.log('130')
+            }
+          },
+          plusButtonClicked() {
+            if (this.computedNumber !== '') {
+              return
+            }
+
+            if (this.firstNumber === '') {
+              return
+            }
+
+            if (this.firstNumber !== '') {
+              this.operation = 'addition'
+            }
+
+            if (this.firstNumber !== '' && this.secondNumber !== '') {
+              this.computedNumber = this.firstNumber += this.secondNumber
+              this.firstNumber = this.computedNumber
+              this.display = this.computedNumber
+              // this.display = this.computedNumber.toString()
+              // this.secondNumber = ''
+            }
+          },
+          minusButtonClicked() {
+            this.operation = 'subtraction'
+            // if (this.operation === '') {
+            //   this.operation = 'subtraction'
+            // }
+            // if (this.operation === '') {
+            //   this.operation = 'subtraction'
+            // } else {
+              this.firstNumber = this.computedNumber
+              this.secondNumber = ''
+            // }
           },
           // addToDisplay() {
           //   if (this.computedNumber !== 0) {
