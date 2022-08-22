@@ -23,8 +23,8 @@
 
     <div id="app">
       <div class="flex justify-center align-center h-100vh">
-        <!-- <table class="calc-height calc-width">
-          <tr>
+        <table class="calc-height calc-width">
+          <!-- <tr>
             <th colspan="4">
               <div class="flex justify-end align-end h-100 padding-right-10">
                 <span v-if="!display" class="display">0</span>
@@ -36,13 +36,13 @@
             <td class="calc-midgrey"><button @click="allClear">AC</button></td>
             <td class="calc-midgrey"><button>+/-</button></td>
             <td class="calc-midgrey"><button>%</button></td>
-            <td class="calc-orange"><button>&#247;</button></td>
+            <td class="calc-orange"><button @click="divisionButtonClicked">&#247;</button></td>
           </tr>
           <tr>
             <td class="calc-lightgrey"><button @click="addToDisplay">7</button></td>
             <td class="calc-lightgrey"><button @click="addToDisplay">8</button></td>
             <td class="calc-lightgrey"><button @click="addToDisplay">9</button></td>
-            <td class="calc-orange"><button>&#215;</button></td>
+            <td class="calc-orange"><button @click="multiplyButtonClicked">&#215;</button></td>
           </tr>
           <tr>
             <td class="calc-lightgrey"><button @click="addToDisplay">4</button></td>
@@ -60,8 +60,8 @@
             <td colspan="2" class="calc-lightgrey bottom-left-btn"><button @click="addToDisplay">0</button></td>
             <td class="calc-lightgrey"><button>.</button></td>
             <td class="calc-orange bottom-right-btn"><button @click="equalSignClicked">=</button></td>
-          </tr>
-        </table> -->
+          </tr> -->
+        </table>
       </div>
     </div>
 
@@ -121,18 +121,28 @@
             if (this.operation === 'addition') {
               this.computedNumber = this.firstNumber += this.secondNumber
               this.display = this.computedNumber
-              console.log('125')
             }
 
             if (this.operation === 'subtraction') {
               this.computedNumber = this.firstNumber -= this.secondNumber
               this.display = this.computedNumber
-              console.log('130')
+            }
+
+            if (this.operation === 'multiplication') {
+              this.computedNumber = this.firstNumber *= this.secondNumber
+              this.display = this.computedNumber
+            }
+
+            if (this.operation === 'division') {
+              this.computedNumber = this.firstNumber /= this.secondNumber
+              this.display = this.computedNumber
             }
           },
           plusButtonClicked() {
             if (this.computedNumber !== '') {
-              return
+              this.operation = 'addition'
+              this.firstNumber = this.computedNumber
+              this.secondNumber = ''
             }
 
             if (this.firstNumber === '') {
@@ -147,21 +157,70 @@
               this.computedNumber = this.firstNumber += this.secondNumber
               this.firstNumber = this.computedNumber
               this.display = this.computedNumber
-              // this.display = this.computedNumber.toString()
-              // this.secondNumber = ''
             }
           },
           minusButtonClicked() {
-            this.operation = 'subtraction'
-            // if (this.operation === '') {
-            //   this.operation = 'subtraction'
-            // }
-            // if (this.operation === '') {
-            //   this.operation = 'subtraction'
-            // } else {
+            if (this.computedNumber !== '') {
+              this.operation = 'subtraction'
               this.firstNumber = this.computedNumber
               this.secondNumber = ''
-            // }
+            }
+
+            if (this.firstNumber === '') {
+              return
+            }
+
+            if (this.firstNumber !== '') {
+              this.operation = 'subtraction'
+            }
+
+            if (this.firstNumber !== '' && this.secondNumber !== '') {
+              this.computedNumber = this.firstNumber -= this.secondNumber
+              this.firstNumber = this.computedNumber
+              this.display = this.computedNumber
+            }
+          },
+          multiplyButtonClicked() {
+            if (this.computedNumber !== '') {
+              this.operation = 'multiplication'
+              this.firstNumber = this.computedNumber
+              this.secondNumber = ''
+            }
+
+            if (this.firstNumber === '') {
+              return
+            }
+
+            if (this.firstNumber !== '') {
+              this.operation = 'multiplication'
+            }
+
+            if (this.firstNumber !== '' && this.secondNumber !== '') {
+              this.computedNumber = this.firstNumber *= this.secondNumber
+              this.firstNumber = this.computedNumber
+              this.display = this.computedNumber
+            }
+          },
+          divisionButtonClicked() {
+            if (this.computedNumber !== '') {
+              this.operation = 'division'
+              this.firstNumber = this.computedNumber
+              this.secondNumber = ''
+            }
+
+            if (this.firstNumber === '') {
+              return
+            }
+
+            if (this.firstNumber !== '') {
+              this.operation = 'division'
+            }
+
+            if (this.firstNumber !== '' && this.secondNumber !== '') {
+              this.computedNumber = this.firstNumber /= this.secondNumber
+              this.firstNumber = this.computedNumber
+              this.display = this.computedNumber
+            }
           },
           // addToDisplay() {
           //   if (this.computedNumber !== 0) {
@@ -197,20 +256,6 @@
           //     }
           //     this.assignSecondNumber()
           //   }
-          // },
-
-          // compute() {
-          //   if (this.firstNumber === 0) {
-          //     return
-          //   }
-          //   if (this.operation === 'addition') {
-          //     this.computedNumber = this.firstNumber + this.secondNumber
-          //     this.display = this.computedNumber
-          //     this.firstNumber = this.computedNumber
-          //   }
-          // },
-          // sum() {
-          //   this.operation = 'addition'
           // },
 
           allClear() {
