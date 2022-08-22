@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,13 +9,88 @@
   <link rel="stylesheet" href="css/reset.css">
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/styles.css">
+  <link href="/dist/output.css" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300&display=swap" rel="stylesheet">
 </head>
+
 <body>
   <header>
   </header>
   <main>
+    <script src="https://unpkg.com/vue@3"></script>
+
+    <div id="app">
+      <div class="flex justify-center align-center h-100vh">
+        <!-- <table class="calc-height calc-width">
+          <tr>
+            <th colspan="4">
+              <div class="flex justify-end align-end h-100 padding-right-10">
+                <span class="display">{{firstNumber}}</span>
+              </div>
+            </th>
+          </tr>
+          <tr>
+            <td class="calc-midgrey"><button @click="allClear">AC</button></td>
+            <td class="calc-midgrey"><button>+/-</button></td>
+            <td class="calc-midgrey"><button>%</button></td>
+            <td class="calc-orange"><button>&#247;</button></td>
+          </tr>
+          <tr>
+            <td class="calc-lightgrey"><button>7</button></td>
+            <td class="calc-lightgrey"><button>8</button></td>
+            <td class="calc-lightgrey"><button>9</button></td>
+            <td class="calc-orange"><button>&#215;</button></td>
+          </tr>
+          <tr>
+            <td class="calc-lightgrey"><button>4</button></td>
+            <td class="calc-lightgrey"><button>5</button></td>
+            <td class="calc-lightgrey"><button>6</button></td>
+            <td class="calc-orange"><button>-</button></td>
+          </tr>
+          <tr>
+            <td class="calc-lightgrey"><button>1</button></td>
+            <td class="calc-lightgrey"><button>2</button></td>
+            <td class="calc-lightgrey"><button @click="display">3</button></td>
+            <td class="calc-orange"><button>+</button></td>
+          </tr>
+          <tr>
+            <td colspan="2" class="calc-lightgrey bottom-left-btn"><button>0</button></td>
+            <td class="calc-lightgrey"><button>.</button></td>
+            <td class="calc-orange bottom-right-btn"><button>=</button></td>
+          </tr>
+        </table> -->
+      </div>
+    </div>
+
+    <script>
+      const { createApp } = Vue
+
+      createApp({
+        data() {
+          return {
+            firstNumber: 0,
+            secondNumber: 0
+          }
+        },
+        methods: {
+          display() {
+            if (this.firstNumber === 0) {
+              this.firstNumber = event.target.innerText
+            } else {
+              this.firstNumber += event.target.innerText
+            }
+          },
+          allClear() {
+            this.firstNumber = 0
+          }
+        }
+      }).mount('#app')
+    </script>
   </main>
   <script src="js/data.js"></script>
   <script src="js/main.js"></script>
 </body>
+
 </html>
