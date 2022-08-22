@@ -27,7 +27,8 @@
           <tr>
             <th colspan="4">
               <div class="flex justify-end align-end h-100 padding-right-10">
-                <span class="display">{{display}}</span>
+                <span v-if="!display" class="display">0</span>
+                <span v-else class="display">{{display}}</span>
               </div>
             </th>
           </tr>
@@ -70,56 +71,92 @@
       createApp({
         data() {
           return {
-            firstNumber: 0,
-            secondNumber: 0,
-            computedNumber: 0,
+            firstNumber: '',
+            secondNumber: '',
+            computedNumber: '',
             display: 0,
             operation: ''
           }
         },
         methods: {
-          addToDisplay() {
-            if (this.operation === '') {
-              if (this.display === 0 && event.target.innerText === "0") {
-                return
-              }
-              if (this.display === 0) {
-                this.display = event.target.innerText
-              } else {
-                this.display += event.target.innerText
-              }
-              this.assignFirstNumber()
-            }
-
-            if (this.operation !== '') {
-              if (this.secondNumber === 0) {
-                this.display = event.target.innerText
-              } else {
-                this.display += event.target.innerText
-              }
-              this.assignSecondNumber()
-            }
-          },
           assignFirstNumber() {
             this.firstNumber = Number(this.display)
           },
           assignSecondNumber() {
             this.secondNumber = Number(this.display)
           },
-          compute() {
-            if (this.operation === 'addition') {
-              this.computedNumber = this.firstNumber + this.secondNumber
-              this.display = this.computedNumber
-              this.firstNumber = this.computedNumber
-            }
+          clearFirstNumber() {
+            this.firstNumber = 0
           },
-          sum() {
-            this.operation = 'addition'
+          clearSecondNumber() {
+            this.secondNumber = 0
           },
+          clearComputedNumber() {
+            this.computedNumber = 0
+          },
+          clearOperation() {
+            this.operation = ''
+          },
+          addToDisplay() {
+            this.firstNumber += event.target.innerText
+            console.log(this.firstNumber)
+            this.display = this.firstNumber
+          },
+          // addToDisplay() {
+          //   if (this.computedNumber !== 0) {
+          //     this.clearFirstNumber()
+          //     this.clearSecondNumber()
+          //     this.clearComputedNumber()
+          //     this.clearOperation()
+          //     this.display = event.target.innerText
+          //     console.log('106')
+          //     this.assignFirstNumber()
+          //     return
+          //   }
+          //   if (this.operation === '') {
+          //     if (this.display === 0 && event.target.innerText === "0") {
+          //       return
+          //     }
+          //     if (this.display === 0) {
+          //       this.display = event.target.innerText
+          //       console.log('115')
+          //     } else {
+          //       this.display += event.target.innerText
+          //       console.log('118')
+          //     }
+          //     this.assignFirstNumber()
+          //   }
+          //   if (this.operation !== '') {
+          //     if (this.secondNumber === 0) {
+          //       this.display = event.target.innerText
+          //       console.log('125')
+          //     } else {
+          //       this.display += event.target.innerText
+          //       console.log('127')
+          //     }
+          //     this.assignSecondNumber()
+          //   }
+          // },
+
+          // compute() {
+          //   if (this.firstNumber === 0) {
+          //     return
+          //   }
+          //   if (this.operation === 'addition') {
+          //     this.computedNumber = this.firstNumber + this.secondNumber
+          //     this.display = this.computedNumber
+          //     this.firstNumber = this.computedNumber
+          //   }
+          // },
+          // sum() {
+          //   this.operation = 'addition'
+          // },
+
           allClear() {
-            this.firstNumber = 0,
-            this.secondNumber = 0,
-            this.display = 0,
+            this.firstNumber = '',
+            this.secondNumber = '',
+            this.computedNumber = '',
+            this.display = '',
             this.operation = ''
           }
         }
