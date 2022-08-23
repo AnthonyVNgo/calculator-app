@@ -23,8 +23,8 @@
 
     <div id="app">
       <div class="flex justify-center align-center h-100vh">
-        <table class="calc-height calc-width">
-          <!-- <tr>
+        <!-- <table class="calc-height calc-width">
+          <tr>
             <th colspan="4">
               <div class="flex justify-end align-end h-100 padding-right-10">
                 <span v-if="!display" class="display">0</span>
@@ -58,10 +58,10 @@
           </tr>
           <tr>
             <td colspan="2" class="calc-lightgrey bottom-left-btn"><button @click="addToDisplay">0</button></td>
-            <td class="calc-lightgrey"><button>.</button></td>
+            <td class="calc-lightgrey"><button @click="addToDisplay">.</button></td>
             <td class="calc-orange bottom-right-btn"><button @click="equalSignClicked">=</button></td>
-          </tr> -->
-        </table>
+          </tr>
+        </table> -->
       </div>
     </div>
 
@@ -85,39 +85,41 @@
           assignSecondNumber() {
             this.secondNumber = Number(this.display)
           },
-          clearFirstNumber() {
-            this.firstNumber = 0
-          },
-          clearSecondNumber() {
-            this.secondNumber = 0
-          },
-          clearComputedNumber() {
-            this.computedNumber = 0
-          },
-          clearOperation() {
-            this.operation = ''
-          },
           addToDisplay() {
             if (this.display === 0 && event.target.innerText === "0") {
               return
-            }
-
-            if (this.operation === '') {
+            } else if (this.firstNumber.includes(".") && event.target.innerText === ".") {
+              return
+            } else if (this.operation === '') {
               this.firstNumber += event.target.innerText
               this.display = this.firstNumber
-              this.assignFirstNumber()
-            }
-
-            if (this.operation !== '') {
+            } else if (this.operation !== '') {
               this.secondNumber += event.target.innerText
               this.display = this.secondNumber
-              this.assignSecondNumber()
             }
-          },
-          operationClicked() {
-            this.operation = 'clicked'
+
+
+
+            // if (this.display === 0 && event.target.innerText === "0") {
+            //   return
+            // } else if (this.operation === '') {
+            //   this.firstNumber += event.target.innerText
+            //   this.display = this.firstNumber
+            // // } else if (this.operation !== '' && this.computedNumber !== '') {
+            // } else if (this.computedNumber !== '') {
+            //   this.secondNumber = ''
+            //   this.secondNumber += event.target.innerText
+            //   this.display = this.secondNumber
+            // } else if (this.operation !== '') {
+            //   this.secondNumber += event.target.innerText
+            //   this.display = this.secondNumber
+            // }
           },
           equalSignClicked() {
+            if (this.firstNumber === '' || this.secondNumber === '') {
+              return
+            }
+
             if (this.operation === 'addition') {
               this.computedNumber = this.firstNumber += this.secondNumber
               this.display = this.computedNumber
@@ -139,25 +141,50 @@
             }
           },
           plusButtonClicked() {
-            if (this.computedNumber !== '') {
-              this.operation = 'addition'
-              this.firstNumber = this.computedNumber
-              this.secondNumber = ''
-            }
-
             if (this.firstNumber === '') {
               return
-            }
-
-            if (this.firstNumber !== '') {
+            } else if (this.computedNumber !== '') {
               this.operation = 'addition'
-            }
-
-            if (this.firstNumber !== '' && this.secondNumber !== '') {
-              this.computedNumber = this.firstNumber += this.secondNumber
+              this.assignFirstNumber()
+              this.firstNumber = this.computedNumber
+              this.secondNumber = ''
+            } else if (this.secondNumber !== '') {
+              this.assignSecondNumber()
+              this.computedNumber = this.firstNumber + this.secondNumber
               this.firstNumber = this.computedNumber
               this.display = this.computedNumber
+              return
+            } else if (this.firstNumber !== '') {
+              this.operation = 'addition'
+              this.assignFirstNumber()
             }
+            // if (this.computedNumber !== '') {
+            //   console.log(`Line 137: this.computedNumber !== ''`)
+            //   this.operation = 'addition'
+            //   this.assignFirstNumber()
+            //   this.firstNumber = this.computedNumber
+            //   this.secondNumber = ''
+            // }
+
+            // if (this.firstNumber === '') {
+            //   console.log(`Line 145: this.firstNumber === ''`)
+            // }
+
+            // // if (this.firstNumber !== '' && this.secondNumber !== '') {
+            // if (this.secondNumber !== '') {
+            //   console.log(`Line 150: this.secondNumber !== ''`)
+            //   this.assignSecondNumber()
+            //   this.computedNumber = this.firstNumber += this.secondNumber
+            //   this.firstNumber = this.computedNumber
+            //   this.display = this.computedNumber
+            // }
+
+            // if (this.firstNumber !== '') {
+            //   console.log(`Line 158: this.firstNumber !== ''`)
+            //   this.operation = 'addition'
+            //   this.assignFirstNumber()
+            // }
+
           },
           minusButtonClicked() {
             if (this.computedNumber !== '') {
@@ -222,42 +249,6 @@
               this.display = this.computedNumber
             }
           },
-          // addToDisplay() {
-          //   if (this.computedNumber !== 0) {
-          //     this.clearFirstNumber()
-          //     this.clearSecondNumber()
-          //     this.clearComputedNumber()
-          //     this.clearOperation()
-          //     this.display = event.target.innerText
-          //     console.log('106')
-          //     this.assignFirstNumber()
-          //     return
-          //   }
-          //   if (this.operation === '') {
-          //     if (this.display === 0 && event.target.innerText === "0") {
-          //       return
-          //     }
-          //     if (this.display === 0) {
-          //       this.display = event.target.innerText
-          //       console.log('115')
-          //     } else {
-          //       this.display += event.target.innerText
-          //       console.log('118')
-          //     }
-          //     this.assignFirstNumber()
-          //   }
-          //   if (this.operation !== '') {
-          //     if (this.secondNumber === 0) {
-          //       this.display = event.target.innerText
-          //       console.log('125')
-          //     } else {
-          //       this.display += event.target.innerText
-          //       console.log('127')
-          //     }
-          //     this.assignSecondNumber()
-          //   }
-          // },
-
           allClear() {
             this.firstNumber = '',
             this.secondNumber = '',
