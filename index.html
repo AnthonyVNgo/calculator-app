@@ -21,9 +21,13 @@
   <main>
     <script src="https://unpkg.com/vue@3"></script>
 
-    <div id="app">
-      <div>
-        <div v-for="element in calculatorButtons" :key="element">{{element}}</div>
+    <div class="h-100vh justify-center align-center flex" id="app">
+      <div class="h-fit">
+        <div class="grid-container calc-height calc-width calc-body">
+          <div class="display">hi</div>
+          <div class="btn-div" :class="{'zero-btn': ['0'].includes(element), 'equal-btn': ['='].includes(element)}" v-for="element in calculatorButtons" :key="element" @click="clickHandler(element)"><button
+              class="button" :class="{'calc-midgrey': ['AC', '±', '%'].includes(element), 'calc-orange': ['÷', '×', '-', '=', '+'].includes(element), 'equal-btn': ['='].includes(element)}">{{element}}</button></div>
+        </div>
       </div>
     </div>
 
@@ -38,6 +42,22 @@
             calculatorButtons: ['AC', '±', '%', '÷', '7', '8', '9', '×', '4', '5', '6', '-', '1', '2', '3', '+', '0', '.', '='],
             operation: '',
           }
+        },
+        methods: {
+          clickHandler(element) {
+            if (element === 'AC') {
+              this.firstNumber = '',
+              this.secondNumber = '',
+              this.operation = ''
+            }
+          },
+          test() {
+            // console.log('bang')
+
+          }
+        },
+        mounted() {
+          this.test()
         }
       }).mount('#app')
     </script>
