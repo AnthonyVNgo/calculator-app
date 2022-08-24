@@ -51,31 +51,60 @@
         methods: {
           clickHandler(element) {
             if (element === 'AC') {
-              this.firstNumber = '',
-              this.secondNumber = '',
+              this.calculatorValue = '',
+              this.previousCalculatorValue = '',
               this.operation = ''
             }
 
             if (!isNaN(element) || element === '.' && !this.firstNumber.includes('.')) {
-              this.firstNumber += element + ''
+              this.calculatorValue += element + ''
             }
 
             if(['÷', '×', '-', '+'].includes(element)) {
               if (element === '+') {
-                this.operation = 'addition'
+                this.operation = '+'
+                this.previousCalculatorValue = this.calculatorValue
+                this.calculatorValue = ''
               }
 
               if (element === '-') {
-                this.operation = 'subtraction'
+                this.operation = '-'
+                this.previousCalculatorValue = this.calculatorValue
+                this.calculatorValue = ''
               }
 
               if (element === '×') {
-                this.operation = 'multiplication'
+                this.operation = '*'
+                this.previousCalculatorValue = this.calculatorValue
+                this.calculatorValue = ''
               }
 
               if (element === '÷') {
-                this.operation = 'division'
+                this.operation = '/'
+                this.previousCalculatorValue = this.calculatorValue
+                this.calculatorValue = ''
               }
+            }
+
+            if(element === '=') {
+              if (this.operation === '+') {
+                this.calculatorValue = Number(this.previousCalculatorValue) + Number(this.calculatorValue)
+              }
+
+              if(this.operation === '-') {
+                this.calculatorValue = Number(this.previousCalculatorValue) - Number(this.calculatorValue)
+              }
+
+              if(this.operation === '*') {
+                this.calculatorValue = Number(this.previousCalculatorValue) * Number(this.calculatorValue)
+              }
+
+              if(this.operation === '/') {
+                this.calculatorValue = Number(this.previousCalculatorValue) / Number(this.calculatorValue)
+              }
+
+              this.previousCalculatorValue = ''
+              this.operation = ''
             }
           },
         },
