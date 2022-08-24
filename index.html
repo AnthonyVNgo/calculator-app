@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -21,46 +21,18 @@
   <main>
     <script src="https://unpkg.com/vue@3"></script>
 
-    <div id="app">
-      <div class="flex justify-center align-center h-100vh">
-        <!-- <table class="calc-height calc-width">
-          <tr>
-            <th colspan="4">
-              <div class="flex justify-end align-end h-100 padding-right-10">
-                <span class="display">{{firstNumber}}</span>
-              </div>
-            </th>
-          </tr>
-          <tr>
-            <td class="calc-midgrey"><button @click="allClear">AC</button></td>
-            <td class="calc-midgrey"><button>+/-</button></td>
-            <td class="calc-midgrey"><button>%</button></td>
-            <td class="calc-orange"><button>&#247;</button></td>
-          </tr>
-          <tr>
-            <td class="calc-lightgrey"><button>7</button></td>
-            <td class="calc-lightgrey"><button>8</button></td>
-            <td class="calc-lightgrey"><button>9</button></td>
-            <td class="calc-orange"><button>&#215;</button></td>
-          </tr>
-          <tr>
-            <td class="calc-lightgrey"><button>4</button></td>
-            <td class="calc-lightgrey"><button>5</button></td>
-            <td class="calc-lightgrey"><button>6</button></td>
-            <td class="calc-orange"><button>-</button></td>
-          </tr>
-          <tr>
-            <td class="calc-lightgrey"><button>1</button></td>
-            <td class="calc-lightgrey"><button>2</button></td>
-            <td class="calc-lightgrey"><button @click="display">3</button></td>
-            <td class="calc-orange"><button>+</button></td>
-          </tr>
-          <tr>
-            <td colspan="2" class="calc-lightgrey bottom-left-btn"><button>0</button></td>
-            <td class="calc-lightgrey"><button>.</button></td>
-            <td class="calc-orange bottom-right-btn"><button>=</button></td>
-          </tr>
-        </table> -->
+    <div class="h-100vh justify-center align-center flex" id="app">
+      <div class="h-fit">
+        <div class="grid-container calc-height calc-width calc-body">
+          <div class="display">
+            <div class="padding-right-10">
+              <span v-if="calculatorValue=== ''">0</span>
+              <span v-else>{{calculatorValue}}</span>
+            </div>
+          </div>
+          <div class="btn-div" :class="{'zero-btn': ['0'].includes(element), 'equal-btn': ['='].includes(element)}" v-for="element in calculatorButtons" :key="element" @click="clickHandler(element)"><button
+              class="button" :class="{'calc-midgrey': ['AC', '±', '%'].includes(element), 'calc-orange': ['÷', '×', '-', '=', '+'].includes(element), 'equal-btn': ['='].includes(element)}">{{element}}</button></div>
+        </div>
       </div>
     </div>
 
@@ -70,22 +42,72 @@
       createApp({
         data() {
           return {
-            firstNumber: 0,
-            secondNumber: 0
+            previousCalculatorValue: '',
+            calculatorValue: '',
+            calculatorButtons: ['AC', '±', '%', '÷', '7', '8', '9', '×', '4', '5', '6', '-', '1', '2', '3', '+', '0', '.', '='],
+            operation: '',
           }
         },
         methods: {
-          display() {
-            if (this.firstNumber === 0) {
-              this.firstNumber = event.target.innerText
-            } else {
-              this.firstNumber += event.target.innerText
+          clickHandler(element) {
+            if (element === 'AC') {
+              this.calculatorValue = '',
+              this.previousCalculatorValue = '',
+              this.operation = ''
+            }
+
+            if (!isNaN(element) || element === '.' && !this.firstNumber.includes('.')) {
+              this.calculatorValue += element + ''
+            }
+
+            if(['÷', '×', '-', '+'].includes(element)) {
+              if (element === '+') {
+                this.operation = '+'
+                this.previousCalculatorValue = this.calculatorValue
+                this.calculatorValue = ''
+              }
+
+              if (element === '-') {
+                this.operation = '-'
+                this.previousCalculatorValue = this.calculatorValue
+                this.calculatorValue = ''
+              }
+
+              if (element === '×') {
+                this.operation = '*'
+                this.previousCalculatorValue = this.calculatorValue
+                this.calculatorValue = ''
+              }
+
+              if (element === '÷') {
+                this.operation = '/'
+                this.previousCalculatorValue = this.calculatorValue
+                this.calculatorValue = ''
+              }
+            }
+
+            if(element === '=') {
+              if (this.operation === '+') {
+                this.calculatorValue = Number(this.previousCalculatorValue) + Number(this.calculatorValue)
+              }
+
+              if(this.operation === '-') {
+                this.calculatorValue = Number(this.previousCalculatorValue) - Number(this.calculatorValue)
+              }
+
+              if(this.operation === '*') {
+                this.calculatorValue = Number(this.previousCalculatorValue) * Number(this.calculatorValue)
+              }
+
+              if(this.operation === '/') {
+                this.calculatorValue = Number(this.previousCalculatorValue) / Number(this.calculatorValue)
+              }
+
+              this.previousCalculatorValue = ''
+              this.operation = ''
             }
           },
-          allClear() {
-            this.firstNumber = 0
-          }
-        }
+        },
       }).mount('#app')
     </script>
   </main>
